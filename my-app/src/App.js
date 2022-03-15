@@ -4,6 +4,7 @@ import { Grid, Header } from "semantic-ui-react";
 import Floors from "./component/Floors";
 import ElevatorController from "./component/ElevatorController";
 import { DestinationFloor } from "./util/structs";
+import Building from "./component/Building";
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -28,6 +29,7 @@ class App extends React.Component {
       movingB: false,
       callUp: [], // floors
       callDown: [],
+      requestSetter: DestinationFloor,
     };
   }
   componentDidMount() {
@@ -143,7 +145,7 @@ class App extends React.Component {
     }
     const holdingS = new DestinationFloor(floor, direction);
     this.state.holding.push(holdingS);
-    this.setState({ holding: this.state.holding }, function(){this.elevatorControllerFunction()});
+    this.setState({ requestSetter:holdingS, holding: this.state.holding }, function(){this.elevatorControllerFunction()});
   };
 
   numberOfFreeElevator = () => {
@@ -334,6 +336,7 @@ class App extends React.Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        <Building requestSetter={this.state.requestSetter} numberOfFloors = {this.state.numberOfFloor} ></Building>
       </>
     );
   }
