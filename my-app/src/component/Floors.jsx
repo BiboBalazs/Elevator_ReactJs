@@ -100,7 +100,7 @@ export default class Floors extends React.Component {
                   numberOfFloor={floor}
                   selectedFloor={this.props.selectedFloor}
                   currentA={this.state.data.elevatorData[0].currentFloor}
-                  currentB={this.state.data.elevatorData[0].currentFloor}
+                  currentB={this.state.data.elevatorData[1].currentFloor}
                 ></Floor>{" "}
               </Grid.Row>
             ))}

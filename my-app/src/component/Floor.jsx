@@ -48,6 +48,7 @@ export default class Floor extends React.Component {
       }
     }
     if (this.state.statusUp === 0) {
+
       if (
         this.state.currentA === this.state.numberOfFloor ||
         this.state.currentB === this.state.numberOfFloor
