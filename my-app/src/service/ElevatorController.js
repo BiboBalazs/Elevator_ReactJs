@@ -8,14 +8,16 @@ function sleep(ms) {
 
 
 export class ElevatorControllerClass {
+  building;
   callingRequests = [];
   elevators = [];
   numberOfFloor;
 
-  constructor(numberOfFloor) {
+  constructor(numberOfFloor,building) {
+    this.building=building;
     this.numberOfFloor = numberOfFloor;
-    this.elevators.push(new Elevator(0, 0));
-    this.elevators.push(new Elevator(1, numberOfFloor));
+    this.elevators.push(new Elevator(0, 0, this));
+    this.elevators.push(new Elevator(1, numberOfFloor, this));
   }
 
   pushRequest = (request) => {
@@ -23,16 +25,30 @@ export class ElevatorControllerClass {
     this.elevatorController();
   };
 
+  pushRequestToElevator = (request, id) => {
+    this.elevators[id].addStop(request);
+    this.elevators[id].handleMovement();
+
+  }
+
   finishRequest = (request) => {
     this.callingRequests = this.callingRequests.filter(
       (req) => req !== request
     );
   };
 
+  // kap egy elevatorDatat: minden relevans infot tole
+  // kellene: a nem a sajat id-jatol lekeri az adatokat plusz
+  //  a sajatjava osszefuzi es csinal egy data-t
+  updateData = () => {
+    this.building.setData(this.getData());
+  } 
+
   getData = () => {
     const elevatorData = [];
     elevatorData[0] = this.elevators[0].getData();
     elevatorData[1] = this.elevators[1].getData();
+    console.log(elevatorData);
     return new Data(elevatorData,this.callingRequests);
   };
 
@@ -60,9 +76,13 @@ export class ElevatorControllerClass {
     return fl;
   };
 
-  waitingForElevator = async () => {
+  waitingForElevator = () => {
     while(this.getFreeElevators().length!==0){
-        await sleep(50);
+        console.log('alma1');
+        sleep(50);
+        if (this.getFreeElevators().length!==0) {
+          break;
+        }
     }
   }
 
@@ -128,8 +148,11 @@ export class ElevatorControllerClass {
                 this.finishRequest(dest);
             } else {
                 if (freeElev.length===0) {
-                    await this.waitingForElevator();
-                    this.elevatorController();
+                  // console.log('alma');
+
+                  this.waitingForElevator().then(this.elevatorController());
+                  // sleep(1000);
+                    // this.elevatorController();
                 }
             }
         }

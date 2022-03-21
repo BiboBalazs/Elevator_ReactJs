@@ -7,8 +7,8 @@ export default class Floor extends React.Component {
     this.state = {
       directionA: 0,
       directionB: 0,
-      currentA:0,
-      currentB:0,
+      currentA: 0,
+      currentB: 0,
       numberOfFloor: 0,
       statusUp: 1,
       statusDown: 1,
@@ -25,19 +25,37 @@ export default class Floor extends React.Component {
     });
   }
   componentDidUpdate(prevProps) {
-    if (this.state.currentA!== prevProps.currentA || this.state.currentB!== prevProps.currentB) {
-        this.setState({currentA: this.props.currentA, currentB: this.props.currentB}, function() {this.render()});  
+    if (
+      this.state.currentA !== prevProps.currentA ||
+      this.state.currentB !== prevProps.currentB
+    ) {
+      this.setState(
+        { currentA: this.props.currentA, currentB: this.props.currentB },
+        function() {
+          this.render();
+        }
+      );
     }
 
-    if(this.state.statusDown === 0){
-        if(this.state.currentA === this.state.numberOfFloor || this.state.currentB === this.state.numberOfFloor){
-            this.setState({statusDown: 1}, function() {this.render()});
-        }
+    if (this.state.statusDown === 0) {
+      if (
+        this.state.currentA === this.state.numberOfFloor ||
+        this.state.currentB === this.state.numberOfFloor
+      ) {
+        this.setState({ statusDown: 1 }, function() {
+          this.render();
+        });
+      }
     }
-    if(this.state.statusUp === 0){
-        if(this.state.currentA === this.state.numberOfFloor || this.state.currentB === this.state.numberOfFloor){
-            this.setState({statusUp: 1}, function() {this.render()});
-        }
+    if (this.state.statusUp === 0) {
+      if (
+        this.state.currentA === this.state.numberOfFloor ||
+        this.state.currentB === this.state.numberOfFloor
+      ) {
+        this.setState({ statusUp: 1 }, function() {
+          this.render();
+        });
+      }
     }
 
     if (
@@ -49,21 +67,18 @@ export default class Floor extends React.Component {
         directionB: this.props.directionB,
       });
     }
-   
-
   }
 
   makeRequest = (floor, destination) => {
-    if(destination===1){
-        this.setState({statusUp:0});
+    if (destination === 1) {
+      this.setState({ statusUp: 0 });
     } else {
-        this.setState({statusDown:0});
+      this.setState({ statusDown: 0 });
     }
-    this.state.selectedFloor(floor,destination);
-  }
+    this.state.selectedFloor(floor, destination);
+  };
 
-  render()
-    {
+  render() {
     const { directionA, directionB, numberOfFloor } = this.state;
     let dirA;
     switch (directionA) {
@@ -94,17 +109,44 @@ export default class Floor extends React.Component {
     }
 
     let btnUp;
-    if(this.state.statusUp===1){
-        btnUp=<Button onClick={() => this.makeRequest(numberOfFloor, 1)}><Icon name="angle up"> </Icon></Button>;
-    } else{
-        btnUp=<Button color="red" disabled onClick={() => this.makeRequest(numberOfFloor, 1)}><Icon name="angle up"> </Icon></Button>;
+    if (this.state.statusUp === 1) {
+      btnUp = (
+        <Button onClick={(e) => this.makeRequest(numberOfFloor, 1)}>
+          <Icon name="angle up"> </Icon>
+        </Button>
+      );
+    } else {
+      btnUp = (
+        <Button
+          color="red"
+          disabled
+          onClick={(e) => this.makeRequest(numberOfFloor, 1)}
+        >
+          <Icon name="angle up"> </Icon>
+        </Button>
+      );
     }
 
     let btnDown;
-    if(this.state.statusDown===1){
-        btnDown=<Button color='green' onClick={() => this.makeRequest(numberOfFloor, -1)}><Icon name="angle down"> </Icon></Button>;
-    } else{
-        btnDown=<Button color="red" disabled  onClick={() => this.makeRequest(numberOfFloor, -1)}><Icon name="angle down"> </Icon></Button>;
+    if (this.state.statusDown === 1) {
+      btnDown = (
+        <Button
+          color="green"
+          onClick={(e) => this.makeRequest(numberOfFloor, -1)}
+        >
+          <Icon name="angle down"> </Icon>
+        </Button>
+      );
+    } else {
+      btnDown = (
+        <Button
+          color="red"
+          disabled
+          onClick={(e) => this.makeRequest(numberOfFloor, -1)}
+        >
+          <Icon name="angle down"> </Icon>
+        </Button>
+      );
     }
 
     if (numberOfFloor === 0) {
@@ -149,9 +191,9 @@ export default class Floor extends React.Component {
           {dirA}
           {dirB}
           <Button.Group>
-          {btnUp}
+            {btnUp}
             <Button.Or />
-        {btnDown}
+            {btnDown}
           </Button.Group>
         </Segment>
       </>

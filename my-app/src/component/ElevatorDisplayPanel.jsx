@@ -17,7 +17,7 @@ export default class ElevatorDisplayPanel extends React.Component {
   }
 
   componentDidMount = async () => {
-    await sleep(1);
+    await sleep(10);
     const { floors, numberOfFloors, currentFloor } = this.props;
     this.setState({
       numberOfFloors: numberOfFloors,

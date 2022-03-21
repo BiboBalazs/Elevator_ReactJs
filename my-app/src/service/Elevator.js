@@ -4,12 +4,14 @@ function sleep(ms) {
 
 
 export class Elevator {
+  elevatorController;
   elevatorID;
   status;
   stops = [];
   currentFloor;
 
-  constructor(elevatorID, currentFloor) {
+  constructor(elevatorID, currentFloor, elevatorController) {
+    this.elevatorController = elevatorController;
     this.elevatorID = elevatorID;
     this.status = 0;
     this.stops = [];
@@ -32,6 +34,11 @@ export class Elevator {
   getCurrentLocation() {
       return this.currentFloor;
   }
+
+  pushData() {
+    this.elevatorController.updateData();
+  }
+
   // ugy rendezzuk ha pl felfele halad az elerhetoek sargak lesznek a tobbi piros s ahol halad az zold
   addStop(targetFloor) {
     this.setStatus(targetFloor);
@@ -77,11 +84,16 @@ export class Elevator {
             { 
                 await sleep(1000);
                 this.move();
+                this.pushData();
                 this.stops=this.stops.filter( (floor) => floor !==this.currentFloor);
+                // console.log(this.getData());
                 await sleep(1000);
+                this.pushData();
                 
             }
             this.status = 0;
+            this.pushData();
+
         }
   }
 }

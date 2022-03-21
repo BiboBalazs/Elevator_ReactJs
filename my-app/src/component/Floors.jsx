@@ -1,6 +1,11 @@
 import React from "react";
 import { Grid, Header, Segment } from "semantic-ui-react";
+import { Data } from "../util/structs";
 import Floor from "./Floor";
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export default class Floors extends React.Component {
   constructor(props) {
@@ -11,11 +16,14 @@ export default class Floors extends React.Component {
       directionB: 0,
       currentA: 0,
       currentB: 0,
+      loading: 0,
+      data: Data,
     };
   }
 
-  componentDidMount() {
-    const { numberOfFloors, directionA, directionB, currentA, currentB, movingA, movingB } = this.props;
+  componentDidMount = async() => {
+     await sleep(10);
+    const { numberOfFloors, directionA, directionB, currentA, currentB, loading, data } = this.props;
     const arrayOfFloors = Array.from(Array(numberOfFloors + 1).keys());
     const floors = arrayOfFloors.reverse();
     this.setState({
@@ -24,11 +32,14 @@ export default class Floors extends React.Component {
       directionB: directionB,
       currentA: currentA,
       currentB: currentB,
-      movingA: movingA,
-      movingB: movingB,
+      loading: loading,
+      data: data,
     });
   }
   componentDidUpdate(prevProps) {
+    if(this.props.loading !== prevProps.loading){
+      this.setState({loading:this.props.loading})
+    }
     if (
       this.props.directionA !== prevProps.directionA ||
       this.props.directionB !== prevProps.directionB
@@ -40,13 +51,16 @@ export default class Floors extends React.Component {
     }
 
     if (this.props.currentA!== prevProps.currentA || this.props.currentB!== prevProps.currentB) {
-      this.setState({currentA: this.props.currentA, currentB: this.props.currentB});  
+        this.setState({currentA: this.props.currentA, currentB: this.props.currentB});  
     }
 
-    if (this) {
-        
+    if(this.props.data!== prevProps.data) {
+      this.setState({data: this.props.data});
     }
   }
+
+
+
   render() {
     const { floors } = this.state;
 
@@ -59,12 +73,12 @@ export default class Floors extends React.Component {
           {floors.map((floor) => (
             <Grid.Row>
               <Floor
-                directionA={this.state.directionA}
-                directionB={this.state.directionB}
+                directionA={this.state.data.elevatorData[0].status}
+                directionB={this.state.data.elevatorData[1].status}
                 numberOfFloor={floor}
                 selectedFloor={this.props.selectedFloor}
-                currentA={this.state.currentA}
-                currentB={this.state.currentB}
+                currentA={this.state.data.elevatorData[0].currentFloor}
+                currentB={this.state.data.elevatorData[0].currentFloor}
               ></Floor>{" "}
             </Grid.Row>
           ))}
