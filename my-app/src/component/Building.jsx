@@ -76,8 +76,8 @@ export default class Building extends React.Component {
   selectedFloorInElevetor = (floor, id) => {
     // const dest = new DestinationFloor(floor, direction);
     //ide meg kell hivni a elevator sajat hizzaadojat
-    this.state.elevatorController.pushRequestToElevator(floor,id);
-  }
+    this.state.elevatorController.pushRequestToElevator(floor, id);
+  };
 
   getData = () => {
     this.setState({ data: this.state.elevatorController.getData() });

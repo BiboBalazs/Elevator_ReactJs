@@ -21,9 +21,17 @@ export default class Floors extends React.Component {
     };
   }
 
-  componentDidMount = async() => {
-     await sleep(10);
-    const { numberOfFloors, directionA, directionB, currentA, currentB, loading, data } = this.props;
+  componentDidMount = async () => {
+    await sleep(10);
+    const {
+      numberOfFloors,
+      directionA,
+      directionB,
+      currentA,
+      currentB,
+      loading,
+      data,
+    } = this.props;
     const arrayOfFloors = Array.from(Array(numberOfFloors + 1).keys());
     const floors = arrayOfFloors.reverse();
     this.setState({
@@ -35,10 +43,10 @@ export default class Floors extends React.Component {
       loading: loading,
       data: data,
     });
-  }
+  };
   componentDidUpdate(prevProps) {
-    if(this.props.loading !== prevProps.loading){
-      this.setState({loading:this.props.loading})
+    if (this.props.loading !== prevProps.loading) {
+      this.setState({ loading: this.props.loading });
     }
     if (
       this.props.directionA !== prevProps.directionA ||
@@ -50,16 +58,20 @@ export default class Floors extends React.Component {
       });
     }
 
-    if (this.props.currentA!== prevProps.currentA || this.props.currentB!== prevProps.currentB) {
-        this.setState({currentA: this.props.currentA, currentB: this.props.currentB});  
+    if (
+      this.props.currentA !== prevProps.currentA ||
+      this.props.currentB !== prevProps.currentB
+    ) {
+      this.setState({
+        currentA: this.props.currentA,
+        currentB: this.props.currentB,
+      });
     }
 
-    if(this.props.data!== prevProps.data) {
-      this.setState({data: this.props.data});
+    if (this.props.data !== prevProps.data) {
+      this.setState({ data: this.props.data });
     }
   }
-
-
 
   render() {
     const { floors } = this.state;
@@ -67,22 +79,32 @@ export default class Floors extends React.Component {
     return (
       <>
         <Grid columns={1} centered>
-            <Segment style={{  border: "5px" , background:"#d3c2b8"}} >
-            <Header as='h1' size="huge" block inverted color="red" textAlign="center"> Floors </Header>
-          
-          {floors.map((floor) => (
-            <Grid.Row>
-              <Floor
-                directionA={this.state.data.elevatorData[0].status}
-                directionB={this.state.data.elevatorData[1].status}
-                numberOfFloor={floor}
-                selectedFloor={this.props.selectedFloor}
-                currentA={this.state.data.elevatorData[0].currentFloor}
-                currentB={this.state.data.elevatorData[0].currentFloor}
-              ></Floor>{" "}
-            </Grid.Row>
-          ))}
-            </Segment>
+          <Segment style={{ border: "5px", background: "#d3c2b8" }}>
+            <Header
+              as="h1"
+              size="huge"
+              block
+              inverted
+              color="red"
+              textAlign="center"
+            >
+              {" "}
+              Floors{" "}
+            </Header>
+
+            {floors.map((floor) => (
+              <Grid.Row>
+                <Floor
+                  directionA={this.state.data.elevatorData[0].status}
+                  directionB={this.state.data.elevatorData[1].status}
+                  numberOfFloor={floor}
+                  selectedFloor={this.props.selectedFloor}
+                  currentA={this.state.data.elevatorData[0].currentFloor}
+                  currentB={this.state.data.elevatorData[0].currentFloor}
+                ></Floor>{" "}
+              </Grid.Row>
+            ))}
+          </Segment>
         </Grid>
       </>
     );

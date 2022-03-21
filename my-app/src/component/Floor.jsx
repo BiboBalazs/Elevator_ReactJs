@@ -90,7 +90,7 @@ export default class Floor extends React.Component {
         break;
 
       default:
-        dirA = <Icon name="arrows alternate horizontal"></Icon>;
+        dirA = <Icon name="minus"></Icon>;
         break;
     }
 
@@ -104,7 +104,7 @@ export default class Floor extends React.Component {
         break;
 
       default:
-        dirB = <Icon name="arrows alternate horizontal"></Icon>;
+        dirB = <Icon name="minus"></Icon>;
         break;
     }
 

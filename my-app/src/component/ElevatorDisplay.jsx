@@ -62,7 +62,6 @@ export default class ElevatorDisplay extends React.Component {
       if(this.props.data !== prevProps.data) {
         this.setState({data:this.props.data});
       }
-    //   console.log(this.state.currentFloor,this.props.currentFloor);
   }
 
   setDestinationOnButtonPanel = () => {

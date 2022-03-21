@@ -1,7 +1,6 @@
 function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export class Elevator {
   elevatorController;
@@ -19,7 +18,12 @@ export class Elevator {
   }
 
   getData() {
-    const data = {elevatorID: this.elevatorID, status: this.status, stops:this.stops, currentFloor:this.currentFloor};
+    const data = {
+      elevatorID: this.elevatorID,
+      status: this.status,
+      stops: this.stops,
+      currentFloor: this.currentFloor,
+    };
     return data;
   }
 
@@ -29,10 +33,10 @@ export class Elevator {
 
   getDistance = (destination) => {
     return Math.abs(this.currentFloor - destination);
-  }
+  };
 
   getCurrentLocation() {
-      return this.currentFloor;
+    return this.currentFloor;
   }
 
   pushData() {
@@ -49,7 +53,6 @@ export class Elevator {
       });
       this.stops.reverse();
     } else {
-        
       this.stops.push(targetFloor);
       this.stops.sort(function(a, b) {
         return a - b;
@@ -71,29 +74,26 @@ export class Elevator {
   }
 
   setStatus = (targetFloor) => {
-      if (this.status === 0) {
-        this.status = this.currentFloor-targetFloor>0 ? -1 : 1;
+    if (this.status === 0) {
+      this.status = this.currentFloor - targetFloor > 0 ? -1 : 1;
+    }
+  };
+
+  handleMovement = async () => {
+    while (this.status !== 0) {
+      while (
+        this.currentFloor !== this.stops[this.stops.length - 1] &&
+        this.stops.length !== 0
+      ) {
+        await sleep(1000);
+        this.move();
+        this.pushData();
+        this.stops = this.stops.filter((floor) => floor !== this.currentFloor);
+        await sleep(1000);
+        this.pushData();
       }
-  } 
-
-  handleMovement = async() => {
-        
-        while(this.status!==0) {
-          
-            while((this.currentFloor!== this.stops[this.stops.length-1]) && (this.stops.length!==0))
-            { 
-                await sleep(1000);
-                this.move();
-                this.pushData();
-                this.stops=this.stops.filter( (floor) => floor !==this.currentFloor);
-                // console.log(this.getData());
-                await sleep(1000);
-                this.pushData();
-                
-            }
-            this.status = 0;
-            this.pushData();
-
-        }
-  }
+      this.status = 0;
+      this.pushData();
+    }
+  };
 }
